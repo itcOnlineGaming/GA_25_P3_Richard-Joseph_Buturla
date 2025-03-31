@@ -20,7 +20,7 @@ public class CanonBallProjectile : Projectile
         UpdateProjectile();
     }
 
-    void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         ITargetable targetable = other.GetComponent<ITargetable>();
         if (targetable != null)

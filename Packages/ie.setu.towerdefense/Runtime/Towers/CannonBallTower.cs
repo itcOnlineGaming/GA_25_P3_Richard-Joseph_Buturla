@@ -17,14 +17,11 @@ public class CannonBallTower : Tower
 
     public override void Update()
     {
-        Debug.Log("Update tower");
-
         if (!placed) { return; }
 
         FindTarget();
         if (targetEntity != null && attackStrategy != null)
         {
-            Debug.Log("Entity Not Null");
             attackStrategy.Attack(targetEntity.Transform, firePoint, towerData.FireRate, towerData.Damage);
             LookAtTarget(targetEntity.Transform);
         }

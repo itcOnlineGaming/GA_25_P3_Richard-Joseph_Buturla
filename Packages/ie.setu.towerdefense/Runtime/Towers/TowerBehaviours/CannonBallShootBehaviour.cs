@@ -16,8 +16,8 @@ public class CannonBallShootBehaviour : MonoBehaviour, IAttackBehaviour
         if (Time.time >= lastFireTime + fireRate)
         {
             lastFireTime = Time.time;
-            GameObject planet = GameObject.Find("Planet");
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, planet.transform);
+            GameObject plane = GameObject.Find("Plane"); // was planet
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, plane.transform);
             projectile.GetComponent<Projectile>().Initialize(target, projectileSpeed, damage);
 
             TowerDefenseEvents.RaiseProjectileFired();

@@ -83,8 +83,8 @@ public class TowerPlacer : MonoBehaviour
 
         SpawnTower(position, rotation, TowerFactory.GetTowerData(towerType, TowerData.TowerLevel.LevelOne), buildingPrefab);
 
-        // Event notification for game systems
-      //  OnTowerPlaced(towerType, TowerData.TowerLevel.LevelOne);
+        //  Event notification for game systems
+        //  OnTowerPlaced(towerType, TowerData.TowerLevel.LevelOne);
     }
 
     /// <summary>

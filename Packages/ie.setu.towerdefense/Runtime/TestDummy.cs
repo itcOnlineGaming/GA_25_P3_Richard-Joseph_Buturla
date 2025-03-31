@@ -24,7 +24,6 @@ public class TestDummy : MonoBehaviour, ITargetable
     private void Die()
     {
         Debug.Log("TestDummy has been destroyed.");
-        // Optionally, disable or destroy the object
-        gameObject.SetActive(false);
+        Destroy(this.gameObject);
     }
 }
