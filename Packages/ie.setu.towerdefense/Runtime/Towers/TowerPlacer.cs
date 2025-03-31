@@ -29,6 +29,11 @@ public class TowerPlacer : MonoBehaviour
         {
             placeBuildingEffect = Resources.Load<GameObject>("Prefabs/msVFX_Free Smoke Effects Pack/Prefabs/msVFX_Stylized Smoke 2");
         }
+        Vector3 pos = new Vector3(0, 0, 0);
+        PlaceBuilding(pos, "Cannon");
+        Debug.Log("Hello");
+        TestDummy testDummy = GameObject.Find("TestDummy").GetComponent<TestDummy>();
+        TowerDefenseManager.Instance.RegisterTarget(testDummy);
     }
 
     /// <summary>
@@ -70,23 +75,16 @@ public class TowerPlacer : MonoBehaviour
     /// <summary>
     /// Places a building at the specified triangle location
     /// </summary>
-    public void PlaceBuilding(GameObject triangle, string towerType)
+    public void PlaceBuilding(Vector3 position, string towerType)
     {
         Debug.Log("Trying to place tower");
 
-        if (triangle == null || GameObject.Find("Planet") == null)
-        {
-            Debug.LogError("Triangle not initialized.");
-            return;
-        }
-
-        Vector3 position = triangle.transform.Find("centroid").transform.position;
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, position.normalized);
 
-        SpawnTower(position, rotation, triangle.transform, TowerFactory.GetTowerData(towerType, TowerData.TowerLevel.LevelOne), buildingPrefab);
+        SpawnTower(position, rotation, TowerFactory.GetTowerData(towerType, TowerData.TowerLevel.LevelOne), buildingPrefab);
 
         // Event notification for game systems
-        OnTowerPlaced(towerType, TowerData.TowerLevel.LevelOne);
+      //  OnTowerPlaced(towerType, TowerData.TowerLevel.LevelOne);
     }
 
     /// <summary>
@@ -123,14 +121,15 @@ public class TowerPlacer : MonoBehaviour
     /// <summary>
     /// Spawns a tower at the specified position
     /// </summary>
-    private void SpawnTower(Vector3 position, Quaternion rotation, Transform parent, TowerData data, GameObject buildingPrefab)
+    private void SpawnTower(Vector3 position, Quaternion rotation, TowerData data, GameObject buildingPrefab)
     {
-        ClearEnvironment(parent);
-        GameObject building = Instantiate(buildingPrefab, position, rotation, parent);
+        bool prefabNull = buildingPrefab == null;
+        Debug.Log("Prefab null" + prefabNull);
+        GameObject building = Instantiate(buildingPrefab, position, rotation);
         Quaternion smokeRotation = Quaternion.Euler(0, 0, 90); // Adjust if needed
         float addedHeight = 0.55f;
         Vector3 smokeRaisedHeight = -transform.forward * addedHeight;
-        Instantiate(placeBuildingEffect, position + smokeRaisedHeight, smokeRotation, parent);
+        //Instantiate(placeBuildingEffect, position + smokeRaisedHeight, smokeRotation);
         Tower tower = building.GetComponent<Tower>();
         tower.placed = true;
         tower.Initialise(data);

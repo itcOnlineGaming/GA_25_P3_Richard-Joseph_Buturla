@@ -17,6 +17,8 @@ public class CannonBallTower : Tower
 
     public override void Update()
     {
+        Debug.Log("Update tower");
+
         if (!placed) { return; }
 
         FindTarget();

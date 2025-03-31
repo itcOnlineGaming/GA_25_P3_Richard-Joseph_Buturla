@@ -20,7 +20,7 @@ public class CannonBallShootBehaviour : MonoBehaviour, IAttackBehaviour
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, planet.transform);
             projectile.GetComponent<Projectile>().Initialize(target, projectileSpeed, damage);
 
-             TowerDefenseEvents.RaiseProjectileFired();
+            TowerDefenseEvents.RaiseProjectileFired();
 
             Instantiate(firingSmoke, firePoint.transform.position, Quaternion.identity, transform);
         }
