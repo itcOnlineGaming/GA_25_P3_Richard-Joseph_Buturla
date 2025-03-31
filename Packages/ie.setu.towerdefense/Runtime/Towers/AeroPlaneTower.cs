@@ -24,12 +24,10 @@ public class AeroPlaneTower : Tower
     {
         if (spawnedPlane == null)
         {
-            GameObject planet = GameObject.Find("Planet"); // Get the planet object
             spawnedPlane = Instantiate(planePrefab, transform.position + normal * 5f, Quaternion.identity);
 
-            // Make the plane a child of the planet instead of the tower 
-            // Because in Unity apparently being a child of a parent means you can still move it.
-            spawnedPlane.transform.SetParent(planet.transform, true);
+            // Make the plane a child of the parent of this tower. Usually "Planet" here
+            spawnedPlane.transform.SetParent(transform.parent, true);
         }
 
         AeroPlaneUnit planeUnit = spawnedPlane.GetComponent<AeroPlaneUnit>();
@@ -46,8 +44,9 @@ public class AeroPlaneTower : Tower
 
         if (currentHealth <= 0)
         {
-            Destroy(spawnedPlane);
-            Destroy(gameObject);
+            TowerDefenseEvents.RaiseTowerDestroyed(this);
+            GameObject.Destroy(gameObject);
+            GameObject.Destroy(spawnedPlane);
         }
     }
 }

@@ -11,16 +11,15 @@ public class CannonBallShootBehaviour : MonoBehaviour, IAttackBehaviour
 
     private float lastFireTime = -Mathf.Infinity;
 
-    public void Attack(Transform target, Transform firePoint, float fireRate, float damage)
+    public void Attack(FiringTarget target, Transform firePoint, float fireRate, float damage)
     {
         if (Time.time >= lastFireTime + fireRate)
         {
             lastFireTime = Time.time;
-            GameObject plane = GameObject.Find("Plane"); // was planet, change to some interface? for planet to hold as IPlacableSurface
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, plane.transform);
-            projectile.GetComponent<Projectile>().Initialize(target, projectileSpeed, damage);
 
-            TowerDefenseEvents.RaiseProjectileFired();
+            GameObject projectile = Projectile.InstanciateProjectileWithPossibleParent(this.transform, projectilePrefab, firePoint.position);
+
+            projectile.GetComponent<Projectile>().Initialize(target, projectileSpeed, damage);
 
             Instantiate(firingSmoke, firePoint.transform.position, Quaternion.identity, transform);
         }

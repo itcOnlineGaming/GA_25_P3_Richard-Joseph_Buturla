@@ -26,8 +26,15 @@ public class SniperTower : Tower
         FindTarget();
         if (targetEntity != null && attackStrategy != null)
         {
-            attackStrategy.Attack(targetEntity.Transform, firePoint, towerData.FireRate, towerData.Damage);
+            FiringTarget firingTarget = new FiringTarget(targetEntity.Transform);
+            attackStrategy.Attack(firingTarget, firePoint, towerData.FireRate, towerData.Damage);
             LookAtTarget(targetEntity.Transform);
+        }
+
+        if (currentHealth <= 0)
+        {
+            TowerDefenseEvents.RaiseTowerDestroyed(this);
+            GameObject.Destroy(gameObject);
         }
     }
 
@@ -35,26 +42,14 @@ public class SniperTower : Tower
     {
         if (targetPos == null) return;
 
-        // 'Up' direction relative to planet
-        Vector3 planetUp = (firePoint.position - planetCenter).normalized;
+        Vector3 aimVector;
 
-        // Direction to target
-        Vector3 aimVector = targetPos.position - firePoint.position;
+        aimVector = targetPos.position - Turret.transform.position; //vector to target pos
+        aimVector = Vector3.ProjectOnPlane(aimVector, Turret.transform.up); //project it on an x-z plane 
 
-        // Project onto planet surface
-        Vector3 horizontalAim = Vector3.ProjectOnPlane(aimVector, planetUp);
-        if (horizontalAim.sqrMagnitude < 0.001f)
-            horizontalAim = firePoint.forward;
+        Quaternion q_penguin = Quaternion.LookRotation(aimVector, Turret.transform.up);
 
-        // Compute yaw and pitch
-        Quaternion yawRotation = Quaternion.LookRotation(horizontalAim, planetUp);
-        Vector3 turretRight = yawRotation * Vector3.right;
-        float pitchAngle = Vector3.SignedAngle(horizontalAim, aimVector, turretRight);
-        Quaternion pitchRotation = Quaternion.AngleAxis(pitchAngle, turretRight);
-
-        // Apply rotations
-        Quaternion targetRotation = pitchRotation * yawRotation;
-        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, targetRotation, 10f * Time.deltaTime);
+        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, q_penguin, 10f * Time.deltaTime); //slowly transition
     }
 
     void FindTarget()

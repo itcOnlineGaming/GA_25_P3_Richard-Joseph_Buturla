@@ -10,6 +10,8 @@ public class AeroPlaneUnit : MonoBehaviour
     private float angle;
     private Vector3 normal;
     private Vector3 initialOffset;
+    private float heightOffset = 10f; 
+
 
     public Transform firePoint;
 
@@ -25,23 +27,35 @@ public class AeroPlaneUnit : MonoBehaviour
         initialOffset = parentTower.transform.right * rotationRadius;
     }
 
+
     void UpdateMovement()
     {
-        Vector3 planetCenter = GameObject.Find("Planet").transform.position;
+        GameObject planet = GameObject.Find("Planet");
+        Vector3 trueNormal = new Vector3();
 
-        Vector3 trueNormal = (parentTower.transform.position - planetCenter).normalized;
+        if (planet != null)
+        {
+            Vector3 planetCenter = planet.transform.position;
+            trueNormal = (parentTower.transform.position - planetCenter).normalized;
+        }
+        else
+        {
+            trueNormal = Vector3.up;
+        }
 
         angle += rotationSpeed * Time.deltaTime;
 
         Vector3 initialOffset = Vector3.Cross(trueNormal, Vector3.right).normalized * rotationRadius;
-
         Vector3 offset = Quaternion.AngleAxis(angle, trueNormal) * initialOffset;
 
-        transform.position = parentTower.transform.position + offset;
+        Vector3 heightAdjustment = trueNormal * heightOffset;
+
+        transform.position = parentTower.transform.position + offset + heightAdjustment;
 
         Vector3 tangent = Vector3.Cross(trueNormal, offset).normalized;
         transform.rotation = Quaternion.LookRotation(tangent, trueNormal);
     }
+
 
     void Update()
     {
@@ -52,7 +66,8 @@ public class AeroPlaneUnit : MonoBehaviour
         ITargetable target = FindClosestTarget();
         if (target != null && attackBehaviour != null)
         {
-            attackBehaviour.Attack(target.Transform, firePoint, towerData.FireRate, towerData.Damage);
+            FiringTarget firingTarget = new FiringTarget(target.Transform);
+            attackBehaviour.Attack(firingTarget, firePoint, towerData.FireRate, towerData.Damage);
         }
     }
 

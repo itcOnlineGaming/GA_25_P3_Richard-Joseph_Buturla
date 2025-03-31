@@ -4,14 +4,13 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
 {
-    protected Transform target;
+    protected FiringTarget target;
     protected float speed;
     protected float damage;
     protected Vector3 planetCenter = Vector3.zero; // Default to world origin
     protected float gravityEffect = 0.1f;
-    protected int HitGoldGain = 1;
 
-    public virtual void Initialize(Transform target, float speed, float damage)
+    public virtual void Initialize(FiringTarget target, float speed, float damage)
     {
         this.target = target;
         this.speed = speed;
@@ -20,13 +19,24 @@ public abstract class Projectile : MonoBehaviour
 
     protected virtual void UpdateProjectile()
     {
-        if (target == null)
+        if (target.GetTargetTransform() == null || target.GetTargetPosition() == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Vector3 direction = (target.position - transform.position).normalized;
+        Vector3 targetPosition;
+        if (target.GetTargetTransform() != null)
+        {
+            targetPosition = target.GetTargetTransform().position;
+        } else
+        {
+            targetPosition = target.GetTargetPosition();
+        }
+
+
+
+        Vector3 direction = (targetPosition - transform.position).normalized;
         Vector3 gravity = (planetCenter - transform.position).normalized * gravityEffect;
 
         Vector3 moveVector = (direction + gravity).normalized * speed * Time.deltaTime;
@@ -34,4 +44,26 @@ public abstract class Projectile : MonoBehaviour
 
         transform.LookAt(transform.position + moveVector);
     }
+
+    public static GameObject InstanciateProjectileWithPossibleParent(Transform creator, GameObject projectilePrefab, Vector3 firePoint)
+    {
+        Transform worldArea = null;
+        if (creator.parent != null)
+        {
+            worldArea = creator.parent.transform.parent;
+        }
+        GameObject projectile = null;
+
+        if (worldArea != null)
+        {
+            projectile = Instantiate(projectilePrefab, firePoint, Quaternion.identity, worldArea);
+        }
+        else
+        {
+            projectile = Instantiate(projectilePrefab, firePoint, Quaternion.identity);
+        }
+
+        return projectile;
+    }
+    
 }

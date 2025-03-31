@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanonBallProjectile : Projectile
+public class BasicProjectile : Projectile
 {
     public override void Initialize(FiringTarget target, float speed, float damage)
     {

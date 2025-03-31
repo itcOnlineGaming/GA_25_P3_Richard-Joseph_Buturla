@@ -16,7 +16,7 @@ public class MortarProjectile : Projectile
     private bool hasLaunched = false;
     private bool isAscending = true; // Tracks if we're in the initial ascent phase
 
-    public override void Initialize(Transform target, float speed, float damage)
+    public override void Initialize(FiringTarget target, float speed, float damage)
     {
         base.Initialize(target, speed, damage);
         initialPosition = transform.position;
@@ -27,11 +27,12 @@ public class MortarProjectile : Projectile
     {
         if (!hasLaunched) return;
 
-        if (target == null)
+        if (target.GetTargetPosition() == null)
         {
             Destroy(gameObject);
             return;
         }
+
 
         UpdateProjectile();
     }
@@ -68,7 +69,7 @@ public class MortarProjectile : Projectile
 
     void UpdateTargeting()
     {
-        Vector3 direction = (target.position - transform.position).normalized;
+        Vector3 direction = (target.GetTargetPosition() - transform.position).normalized;
         Vector3 gravity = (planetCenter - transform.position).normalized * gravityEffect;
         Vector3 moveVector = (direction + gravity).normalized * speed * Time.deltaTime;
 
@@ -80,15 +81,14 @@ public class MortarProjectile : Projectile
     {
         ITargetable targetable = other.GetComponent<ITargetable>();
 
-        if (targetable != null)
+         if (targetable != null)
         {
             targetable.TakeDamage(damage);
-            TowerDefenseEvents.RaiseProjectileHit(HitGoldGain);
             OnImpact();
             return;
         }
 
-        if (other.CompareTag("Triangle"))
+        if (other.CompareTag("Triangle")) // Ignore for now
         {
             OnImpact();
         }
@@ -100,12 +100,16 @@ public class MortarProjectile : Projectile
         Quaternion rotation = Quaternion.FromToRotation(Vector3.forward, normal);
 
         GameObject planet = GameObject.Find("Planet");
-        GameObject explosionInstance = Instantiate(explosion, transform.position, rotation, planet.transform);
-
-        foreach (Transform child in explosionInstance.transform)
+        if(planet != null)
         {
-            child.rotation = Quaternion.LookRotation(normal);
+            GameObject explosionInstance = Instantiate(explosion, transform.position, rotation, planet.transform);
+
+            foreach (Transform child in explosionInstance.transform)
+            {
+                child.rotation = Quaternion.LookRotation(normal);
+            }
         }
+        
 
         ApplyAOEDamage();
 
@@ -121,7 +125,6 @@ public class MortarProjectile : Projectile
             if (targetable != null)
             {
                 targetable.TakeDamage(damage);
-                TowerDefenseEvents.RaiseProjectileHit(HitGoldGain);
             }
         }
     }

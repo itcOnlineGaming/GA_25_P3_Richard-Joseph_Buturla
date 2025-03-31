@@ -3,32 +3,35 @@ using System;
 
 public static class TowerDefenseEvents
 {
-    // Event for when a projectile is fired
-    public delegate void ProjectileFiredHandler();
-    public static event ProjectileFiredHandler OnProjectileFired;
-
-    // Event for when a projectile hits a target
-    public delegate void ProjectileHitHandler(int goldGain);
-    public static event ProjectileHitHandler OnProjectileHit;
-
-    public delegate void TowerDestroyedHandler(TowerData towerData);
+    public delegate void TowerDestroyedHandler(Tower tower);
     public static event TowerDestroyedHandler OnTowerDestroyed;
 
-    // Trigger for OnProjectileFired event
-    public static void RaiseProjectileFired()
+    public delegate void TowerPlacedHandler(Tower tower);
+    public static event TowerPlacedHandler OnTowerPlaced;
+
+    public delegate void TowerUpgradedHandler(Tower tower);
+    public static event TowerUpgradedHandler OnTowerUpgraded;
+
+    public delegate void TowerRepairedHandler(Tower tower);
+    public static event TowerRepairedHandler OnTowerRepaired;
+
+    public static void RaiseTowerDestroyed(Tower tower)
     {
-        OnProjectileFired?.Invoke();
+        OnTowerDestroyed?.Invoke(tower);
     }
 
-    // Trigger for OnProjectileHit event
-    public static void RaiseProjectileHit(int goldGain)
+    public static void RaiseTowerPlaced(Tower tower)
     {
-        OnProjectileHit?.Invoke(goldGain);
+        OnTowerPlaced?.Invoke(tower);
     }
 
-    // Trigger for a 
-    public static void RaiseTowerDestroyed(TowerData towerData)
+    public static void RaiseTowerUpgraded(Tower tower)
     {
-        OnTowerDestroyed?.Invoke(towerData);
+        OnTowerUpgraded?.Invoke(tower);
+    }
+
+    public static void RaiseTowerRepaired(Tower tower)
+    {
+        OnTowerRepaired?.Invoke(tower);
     }
 }

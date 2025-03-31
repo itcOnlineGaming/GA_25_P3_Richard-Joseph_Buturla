@@ -26,13 +26,15 @@ public class MortarTower : Tower
 
         if (targetEntity != null && attackStrategy != null)
         {
-            attackStrategy.Attack(targetEntity.Transform, firePoint, towerData.FireRate, towerData.Damage);
+            FiringTarget firingTarget = new FiringTarget(targetEntity.Transform);
+            attackStrategy.Attack(firingTarget, firePoint, towerData.FireRate, towerData.Damage);
             LookAtTarget(targetEntity.Transform);
         }
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            TowerDefenseEvents.RaiseTowerDestroyed(this);
+            GameObject.Destroy(gameObject);
         }
     }
 

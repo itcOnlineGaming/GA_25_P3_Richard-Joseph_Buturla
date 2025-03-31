@@ -58,7 +58,6 @@ public abstract class Tower : MonoBehaviour
     protected ITargetable FindNearestTarget()
     {
         // Find all objects implementing ITargetable in the scene
-        // This assumes you're using a service locator or similar pattern
         List<ITargetable> targets = TowerDefenseManager.Instance.GetAllTargets();
 
         float shortestDistance = Mathf.Infinity;
