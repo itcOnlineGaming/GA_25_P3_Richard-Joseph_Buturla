@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 8630876266145824497}
   - component: {fileID: 2388716678223136503}
   m_Layer: 0
-  m_Name: CanonBallTower
+  m_Name: TestTowerOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abe1414c526150c4c9277aca1d535ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
+  range: 15
   firePoint: {fileID: 3364149786353871848}
   placed: 0
   targetable: 1

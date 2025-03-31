@@ -442,7 +442,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1775391281}
   - component: {fileID: 1775391280}
-  - component: {fileID: 1775391282}
   m_Layer: 0
   m_Name: TowerManager
   m_TagString: Untagged
@@ -463,7 +462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 1729678148375095042, guid: 6c18443d286416a4ea329a1d37cb2d26, type: 3}
-  placeBuildingEffect: {fileID: 985483039366664255, guid: e45e5d1fbcfc9de44b04808e41e0ddc1, type: 3}
+  placeBuildingEffect: {fileID: 0}
   CannonTowerSprite: {fileID: 0}
   FactoryTowerSprite: {fileID: 0}
   MortarTowerSprite: {fileID: 0}
@@ -484,18 +483,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1775391282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775391279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7b6bf11d7138a545aee68941913abb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1941845458
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,6 +50,8 @@ public abstract class Tower : MonoBehaviour
 
     public int GetCurrentHealth() { return currentHealth; }
 
+    public void SetCurrentHealth(int newHealth) { currentHealth = newHealth; }
+
     /// <summary>
     /// Finds the nearest targetable entity within range
     /// </summary>

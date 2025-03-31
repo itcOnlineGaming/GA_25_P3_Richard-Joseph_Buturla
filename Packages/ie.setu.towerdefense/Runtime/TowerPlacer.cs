@@ -29,11 +29,6 @@ public class TowerPlacer : MonoBehaviour
         {
             placeBuildingEffect = Resources.Load<GameObject>("Prefabs/msVFX_Free Smoke Effects Pack/Prefabs/msVFX_Stylized Smoke 2");
         }
-        Vector3 pos = new Vector3(0, 0, 0);
-        PlaceBuilding(pos, "Cannon");
-        Debug.Log("Hello");
-        TestDummy testDummy = GameObject.Find("TestDummy").GetComponent<TestDummy>();
-        TowerDefenseManager.Instance.RegisterTarget(testDummy);
     }
 
     /// <summary>
@@ -75,16 +70,16 @@ public class TowerPlacer : MonoBehaviour
     /// <summary>
     /// Places a building at the specified triangle location
     /// </summary>
-    public void PlaceBuilding(Vector3 position, string towerType)
+    public void PlaceBuilding(Vector3 position, string towerType, TowerData.TowerLevel towerlevel = TowerData.TowerLevel.LevelOne)
     {
         Debug.Log("Trying to place tower");
 
         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, position.normalized);
 
-        SpawnTower(position, rotation, TowerFactory.GetTowerData(towerType, TowerData.TowerLevel.LevelOne), buildingPrefab);
+        SpawnTower(position, rotation, TowerFactory.GetTowerData(towerType, towerlevel), buildingPrefab);
 
         //  Event notification for game systems
-        //  OnTowerPlaced(towerType, TowerData.TowerLevel.LevelOne);
+        OnTowerPlaced(towerType, towerlevel);
     }
 
     /// <summary>
@@ -129,7 +124,7 @@ public class TowerPlacer : MonoBehaviour
         Quaternion smokeRotation = Quaternion.Euler(0, 0, 90); // Adjust if needed
         float addedHeight = 0.55f;
         Vector3 smokeRaisedHeight = -transform.forward * addedHeight;
-        //Instantiate(placeBuildingEffect, position + smokeRaisedHeight, smokeRotation);
+        Instantiate(placeBuildingEffect, position + smokeRaisedHeight, smokeRotation);
         Tower tower = building.GetComponent<Tower>();
         tower.placed = true;
         tower.Initialise(data);
