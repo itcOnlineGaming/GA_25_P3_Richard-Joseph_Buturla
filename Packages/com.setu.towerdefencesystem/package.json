@@ -1,0 +1,15 @@
+{
+  "name": "com.setu.towerdefencesystem",
+  "version": "1.0.0",
+  "displayName": "Tower Defence Package",
+  "description": "A package made for easily integrating a tower system in a tower defence.",
+  "unity": "6000.0",
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Example Scene",
+      "description": "A scene showcasing the package features.",
+      "path": "Samples~/ExampleScene"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static TowerData;
 
 public class TestTowerPerformance : MonoBehaviour
@@ -15,7 +16,8 @@ public class TestTowerPerformance : MonoBehaviour
     bool testFinished = false;
 
     // Put in the name of the tower you are testing here.
-    string towername = "TestTowerOne";
+    string towername = "SniperTower";
+    Tower testedTower;
 
 
     void Start()
@@ -24,17 +26,19 @@ public class TestTowerPerformance : MonoBehaviour
         TowerDefenseManager.Instance.RegisterTarget(damageTestTarget);
 
         // Test New Tower
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelOne, 1000, 900, 1800, 600, 1.0f, 14f, 8.5f, null);
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelTwo, 1000, 900, 1800, 600, 1.0f, 14f, 8.5f, null);
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelThree, 1200, 1200, 2500, 800, 0.8f, 22f, 10f, null);
-        TowerPlacer towerPlacer = GameObject.Find("TowerManager").GetComponent<TowerPlacer>();
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelOne, 1000, 900, 1800, 600, 1.0f, 14f, 15.5f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelTwo, 1000, 900, 1800, 600, 1.0f, 14f, 18.5f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelThree, 1200, 1200, 2500, 800, 0.8f, 22f, 24f, null);
         string towerPrefabPath = "Prefabs/" + towername;
         GameObject testTower = Resources.Load<GameObject>(towerPrefabPath);
-        towerPlacer.buildingPrefab = testTower;
-        Vector3 pos = new Vector3(0, 0, 0);
-        currentTowerLevel = TowerLevel.LevelOne;
-        towerPlacer.PlaceBuilding(pos, towername, currentTowerLevel);
+
         startTime = Time.time;
+        Vector3 pos = new Vector3(0, 0, 0);
+
+        currentTowerLevel = TowerLevel.LevelOne;
+        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, pos.normalized);
+        testedTower = TowerUtils.SpawnTower(pos, rotation, TowerFactory.GetTowerData(towername, TowerData.TowerLevel.LevelOne), testTower);
+
     }
 
     // Update is called once per frame
@@ -69,25 +73,11 @@ public class TestTowerPerformance : MonoBehaviour
                 {
                     damageTestTarget = GameObject.Find("DamageTestTarget").GetComponent<DamageTestTarget>();
                     damageTestTarget.SwitchToNextLevel();
-                    UpgradeBuilding();
+                    TowerUtils.UpgradeBuilding(testedTower);
                 }
                 
             }
         }
         
-    }
-
-    void UpgradeBuilding()
-    {
-        Tower placedTower = GameObject.FindAnyObjectByType<Tower>();
-        TowerData towerData = placedTower.GetTowerData();
-        if (towerData.Level != TowerData.TowerLevel.LevelThree)
-        {
-            TowerData.TowerLevel newLevel = TowerData.TowerLevelUtils.IncrementTowerLevel(towerData.Level);
-            TowerData upgradedTowerData = TowerFactory.GetTowerData(towername, newLevel);
-            int healthBeforeUpgrade = placedTower.GetCurrentHealth();
-            placedTower.Initialise(upgradedTowerData); // Set new tower data
-            placedTower.SetCurrentHealth(healthBeforeUpgrade);
-        }
     }
 }
