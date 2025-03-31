@@ -24,6 +24,7 @@ public class CannonBallTower : Tower
         FindTarget();
         if (targetEntity != null && attackStrategy != null)
         {
+            Debug.Log("Entity Not Null");
             attackStrategy.Attack(targetEntity.Transform, firePoint, towerData.FireRate, towerData.Damage);
             LookAtTarget(targetEntity.Transform);
         }

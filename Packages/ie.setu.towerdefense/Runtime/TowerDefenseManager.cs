@@ -22,6 +22,12 @@ public class TowerDefenseManager : MonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        ITargetable dummy = GameObject.Find("TestDummy").GetComponent<TestDummy>();
+        RegisterTarget(dummy);
+    }
+
     // Registry of all targetable entities in the scene
     private List<ITargetable> allTargets = new List<ITargetable>();
 
