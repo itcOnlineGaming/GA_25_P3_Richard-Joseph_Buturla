@@ -4,12 +4,16 @@ using static TowerData;
 public class Main : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField]
     public string towerName = "TestTowerOne";
     private Tower tower;
     void Start()
     {
-        TestDummy testDummy = GameObject.Find("TestDummy").GetComponent<TestDummy>();
-        TowerDefenseManager.Instance.RegisterTarget(testDummy);
+        TestDummy[] dummies = GameObject.FindObjectsByType<TestDummy>(FindObjectsSortMode.InstanceID);
+        foreach(TestDummy dummy in dummies)
+        {
+            TowerDefenseManager.Instance.RegisterTarget(dummy);
+        }
 
         // Test New Tower
         TowerFactory.CreateTowerData(towerName, TowerLevel.LevelOne, 1000, 900, 1800, 600, 1.0f, 14f, 8.5f, null);

@@ -22,6 +22,10 @@ public abstract class Tower : MonoBehaviour
 
     public virtual void Initialise(TowerData data)
     {
+        if (data.ID.NullID())
+        {
+            data.ID = TowerData.GetNewTowerID();
+        }
         towerData = data;
         currentHealth = data.MaxHealth;
     }

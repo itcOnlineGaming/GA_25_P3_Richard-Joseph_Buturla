@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MortarTower : Tower
+public class CannonBallTower : Tower
 {
     private IAttackBehaviour attackStrategy;
     private ITargetable targetEntity;
 
     public GameObject Turret;
 
-    [Header("Mortar Specific")]
-    public float projectileArcHeight = 5f; // Arc height for the mortar shot
-
     public override void Initialise(TowerData data)
     {
+        if (data.ID.NullID())
+        {
+            data.ID = TowerData.GetNewTowerID();
+        }
         base.Initialise(data);
-        attackStrategy = GetComponent<IAttackBehaviour>(); // Assigns the attack strategy
+        attackStrategy = GetComponent<IAttackBehaviour>();
     }
 
     public override void Update()
     {
-        if (!placed) return; // Only attack when placed
+        if (!placed) { return; }
 
         FindTarget();
-
         if (targetEntity != null && attackStrategy != null)
         {
             FiringTarget firingTarget = new FiringTarget(targetEntity.Transform);
@@ -40,13 +40,14 @@ public class MortarTower : Tower
 
     void LookAtTarget(Transform targetPos)
     {
-        if (targetPos == null) return;
+        Vector3 aimVector;
 
-        Vector3 aimVector = targetPos.position - Turret.transform.position;
-        aimVector = Vector3.ProjectOnPlane(aimVector, Turret.transform.up); // Keeps aim level on planet surface
+        aimVector = targetPos.position - Turret.transform.position; //vector to target pos
+        aimVector = Vector3.ProjectOnPlane(aimVector, Turret.transform.up); //project it on an x-z plane 
 
-        Quaternion targetRotation = Quaternion.LookRotation(aimVector, Turret.transform.up);
-        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, targetRotation, 5f * Time.deltaTime);
+        Quaternion q_penguin = Quaternion.LookRotation(aimVector, Turret.transform.up);
+
+        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, q_penguin, 10f * Time.deltaTime); //slowly transition
     }
 
     void FindTarget()

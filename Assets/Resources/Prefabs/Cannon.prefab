@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 8630876266145824497}
   - component: {fileID: 2388716678223136503}
   m_Layer: 0
-  m_Name: TestTowerOne
+  m_Name: Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 280517118424917568, guid: e2afbf45ed92f08468edb361c52f7365, type: 3}
   firingSmoke: {fileID: 1051268558384495042, guid: d1a4f89458070224bbfca8e398a1e63d, type: 3}
-  projectileSpeed: 5
+  projectileSpeed: 10
 --- !u!1 &2378540943470880987
 GameObject:
   m_ObjectHideFlags: 0

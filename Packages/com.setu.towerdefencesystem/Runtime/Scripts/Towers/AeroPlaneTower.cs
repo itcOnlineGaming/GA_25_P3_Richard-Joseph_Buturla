@@ -10,6 +10,10 @@ public class AeroPlaneTower : Tower
 
     public override void Initialise(TowerData data)
     {
+        if (data.ID.NullID())
+        {
+            data.ID = TowerData.GetNewTowerID();
+        }
         towerData = data;
         currentHealth = data.MaxHealth;
         normal = transform.up;

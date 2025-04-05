@@ -9,6 +9,35 @@ public class TowerData
         LevelThree
     }
 
+    public struct TowerID
+    {
+        public int Value;
+
+        public TowerID(int value)
+        {
+            Value = value;
+        }
+
+        public static TowerID Default => new TowerID(-1);
+
+        public bool NullID()
+        {
+            return Value == -1;
+        }
+
+        public int AsInt()
+        {
+            return Value;
+        }
+    }
+
+    static int newTowerID = -1; // Static increment so we get a new id everytime
+    public static TowerID GetNewTowerID()
+    {
+        newTowerID++;
+        return new TowerID(newTowerID);
+    }
+
     public static class TowerLevelUtils
     {
         public static TowerData.TowerLevel IncrementTowerLevel(TowerData.TowerLevel currentLevel)
@@ -26,6 +55,7 @@ public class TowerData
         }
     }
 
+    public TowerID ID { get; set; }
     public string TowerType { get; private set; }
     public int Cost { get; private set; }
     public int MaxHealth { get; private set; }
@@ -41,6 +71,7 @@ public class TowerData
         int rebuildCost, int maxHealth, float fireRate, float damage, float range, Sprite icon)
     {
         TowerType = towerType;
+        ID = TowerID.Default;
         Level = level;
         Cost = buyCost;
         RebuildCost = rebuildCost;

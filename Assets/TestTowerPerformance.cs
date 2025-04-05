@@ -16,9 +16,24 @@ public class TestTowerPerformance : MonoBehaviour
     bool testFinished = false;
 
     // Put in the name of the tower you are testing here.
-    string towername = "SniperTower";
+    [SerializeField]
+    public string towername = "Sniper";
+
     Tower testedTower;
 
+    private void TestCannonParams()
+    {
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelOne, 1000, 900, 1800, 600, 1.0f, 14f, 15.5f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelTwo, 1000, 900, 1800, 600, 1.0f, 14f, 18.5f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelThree, 1200, 1200, 2500, 800, 0.8f, 22f, 24f, null);
+    }
+
+    private void TestSniperParams()
+    {
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelOne, 700, 550, 1400, 525, 2.5f, 20f, 12f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelTwo, 1050, 650, 2100, 800, 2.0f, 30f, 14f, null);
+        TowerFactory.CreateTowerData(towername, TowerLevel.LevelThree, 1575, 1150, 3150, 1200, 1.5f, 50f, 16f, null);
+    }
 
     void Start()
     {
@@ -26,9 +41,7 @@ public class TestTowerPerformance : MonoBehaviour
         TowerDefenseManager.Instance.RegisterTarget(damageTestTarget);
 
         // Test New Tower
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelOne, 1000, 900, 1800, 600, 1.0f, 14f, 15.5f, null);
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelTwo, 1000, 900, 1800, 600, 1.0f, 14f, 18.5f, null);
-        TowerFactory.CreateTowerData(towername, TowerLevel.LevelThree, 1200, 1200, 2500, 800, 0.8f, 22f, 24f, null);
+        TestCannonParams();
         string towerPrefabPath = "Prefabs/" + towername;
         GameObject testTower = Resources.Load<GameObject>(towerPrefabPath);
 

@@ -1685,7 +1685,7 @@ GameObject:
   - component: {fileID: 7959055501244045828}
   - component: {fileID: 7184090702202781431}
   m_Layer: 0
-  m_Name: SniperTower
+  m_Name: Sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
