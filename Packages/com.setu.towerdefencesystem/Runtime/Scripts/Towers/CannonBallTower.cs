@@ -11,6 +11,10 @@ public class CannonBallTower : Tower
 
     public override void Initialise(TowerData data)
     {
+        if (data.ID.NullID())
+        {
+            data.ID = TowerData.GetNewTowerID();
+        }
         base.Initialise(data);
         attackStrategy = GetComponent<IAttackBehaviour>();
     }

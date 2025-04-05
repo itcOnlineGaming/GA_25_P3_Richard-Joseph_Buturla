@@ -14,6 +14,10 @@ public class SniperTower : Tower
 
     public override void Initialise(TowerData data)
     {
+        if (data.ID.NullID())
+        {
+            data.ID = TowerData.GetNewTowerID();
+        }
         base.Initialise(data);
         attackStrategy = GetComponent<IAttackBehaviour>();
         range = data.Range;
