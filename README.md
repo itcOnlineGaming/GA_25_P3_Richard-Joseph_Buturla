@@ -246,8 +246,8 @@ This package provides a core framework for implementing towers within a tower de
 ## Performance Testing
 
 This package includes an optional testing suite:
-
 * **`TowerPerformanceTestManager`:** Place this script on a GameObject in a test scene. Configure it in the inspector to select the tower prefab name (`towerName`), test duration, dummy types, etc.
+![imageOne](https://github.com/user-attachments/assets/a3c0ea6f-2bdc-4013-85d0-2e54eed2a453)
 * **`TestDummy`:** The target used by the test manager. Prefab can be assigned in the manager. Implements `ITargetable`.
 * **Operation:** When entering Play mode in the test scene, the manager will:
     1.  Spawn the specified tower.
